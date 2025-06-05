@@ -571,6 +571,10 @@ class Pretests:
             cursor = db.cursor()
 
             cursor.execute("""
+                UPDATE Updates SET update_day = 3
+            """)
+
+            cursor.execute("""
                 SELECT update_day FROM Updates;
             """)
 
