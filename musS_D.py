@@ -1,3 +1,4 @@
+import json
 import logging
 import discord
 import os
@@ -17,7 +18,7 @@ from DB import DB
 import yt_dlp
 # needed to add it to a var bc of pylint on my laptop but i delete it right after
 
-handler = logging.FileHandler(filename='recent.log', encoding='utf-8', mode='w')
+handler = logging.FileHandler(filename='recent.log', encoding='utf-8', mode='w') # logging file
 
 XX = '''
 #-fnt stands for finished not tested
@@ -199,5 +200,65 @@ async def on_guild_remove(guild: discord.Guild)-> None:
 async def _help(interaction: discord.Interaction) -> None:
     embed = discord.Embed.from_dict(Pages.get_main_page())
     await interaction.response.send_message(embed=embed, view=Buttons.HelpView(), ephemeral=True)
+
+
+@bot.command()
+async def _dump_voice_connections(ctx) -> None:
+    voice_data = []
+
+    for vc in bot.voice_clients:
+        channel = vc.channel
+        guild = channel.guild
+
+        voice_data.append({
+            "guild": {
+                "id": guild.id,
+                "name": guild.name,
+                "region": str(guild.region) if hasattr(guild, 'region') else "auto",
+            },
+            "channel": {
+                "id": channel.id,
+                "name": channel.name,
+                "bitrate": channel.bitrate,
+                "user_limit": channel.user_limit,
+                "rtc_region": channel.rtc_region,
+                "members": [{
+                    "id": member.id,
+                    "name": str(member),
+                    "deaf": member.voice.deaf if member.voice else None,
+                    "mute": member.voice.mute if member.voice else None,
+                    "self_deaf": member.voice.self_deaf if member.voice else None,
+                    "self_mute": member.voice.self_mute if member.voice else None,
+                    "channel": member.voice.channel.name if member.voice else None,
+                } for member in channel.members],
+            },
+            "voice_client": {
+                "is_connected": vc.is_connected(),
+                "is_playing": vc.is_playing(),
+                "is_paused": vc.is_paused(),
+                "latency": vc.latency,
+            },
+            "bot": {
+                "user": bot.user,
+                "id": bot.user.id,
+                # TODO borken
+                # "queue": Servers.get_player(guild.id).queue.__str__(),
+                # "song": Servers.get_player(guild.id).song.__str__() if Servers.get_player(guild.id).song else None,
+                # "last_np_message": Servers.get_player(guild.id).last_np_message.__str__(),
+                # "looping": Servers.get_player(guild.id).looping.__str__(),
+                # "queue_looping": Servers.get_player(guild.id).queue_looping.__str__(),
+                # "true_looping": Servers.get_player(guild.id).true_looping.__str__(),
+                # "vc": Servers.get_player(guild.id).vc.__str__(),
+            }
+        })
+
+    with open("bot_voice_connections.json", "w") as f:
+        json.dump(voice_data, f, indent=4, default=str)
+        f.flush()
+        os.fsync(f.fileno())
+
+    await ctx.channel.send("Snapshot generated: bot_voice_connections.json")
+    Utils.pront("Snapshot generated: bot_voice_connections.json")
+
 
 bot.run(key, log_handler=handler, log_level=logging.DEBUG, root_logger=True)

@@ -21,6 +21,10 @@ from DB import DB
 
 class VoiceError(Exception):
     """Generic voice error class."""
+
+    def __init__(self):
+        super().__str__()
+        Utils.pront("VoiceError: " + super().__str__(), lvl="ERROR")
     pass
 
 
