@@ -1,5 +1,7 @@
 import json
 import logging
+from datetime import datetime
+
 import discord
 import os
 import traceback
@@ -211,6 +213,10 @@ async def _dump_voice_connections(ctx) -> None:
         guild = channel.guild
 
         voice_data.append({
+            "timestamp":{
+                "POSIX_timestamp": datetime.now().timestamp(),
+                "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            },
             "guild": {
                 "id": guild.id,
                 "name": guild.name,
