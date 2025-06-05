@@ -266,7 +266,7 @@ class Player:
                 self.song.start()
 
                 # Begin playing audio into Discord
-                self.vc.play(discord.FFmpegPCMAudio(
+                self.vc.play(discord.FFmpegOpusAudio(
                     self.song.audio, **YTDLInterface.ffmpeg_options
                 ), after=self.__song_complete)
                 # () implicit parenthesis
