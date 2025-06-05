@@ -570,6 +570,11 @@ class Pretests:
             db = sqlite3.connect('settings.db')
             cursor = db.cursor()
 
+            #debug
+            cursor.execute(""" 
+                UPDATE Updates SET update_day = 3;
+            """)
+
             cursor.execute("""
                 SELECT update_day FROM Updates;
             """)
