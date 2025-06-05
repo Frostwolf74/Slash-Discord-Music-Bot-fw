@@ -69,6 +69,8 @@ class Bot(commands.Bot):  # initiates the bots intents and on_ready event
         
 
     async def on_ready(self):
+        Utils.pront("Checking for updates")
+        await Utils.Pretests.update_libraries()
 
         # Command syncing
         Utils.pront("Syncing tree")

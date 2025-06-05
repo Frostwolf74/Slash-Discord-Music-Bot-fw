@@ -15,3 +15,5 @@ PyNaCl
 python-dotenv
 yarl
 yt-dlp
+pytz # needed for automatic updates
+# tmux # only for linux, allows automatic updates to function

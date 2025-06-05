@@ -2,7 +2,6 @@ import discord
 import random
 from discord.ext import commands
 from discord import app_commands
-from discord.ext.commands import has_guild_permissions
 
 import Buttons
 import Utils
@@ -23,6 +22,9 @@ class QueueManagement(commands.Cog):
         if perm_check is not None:
             await interaction.response.send_message(f"My install link was not set up correctly, i am missing: {perm_check}")
             return
+
+        # checks if libraries are up-to-date
+        await Utils.Pretests.update_libraries(interaction)
 
         # Check if author is in VC
         if interaction.user.voice is None:
