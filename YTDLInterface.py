@@ -31,7 +31,7 @@ class YTDLInterface:
     """
     retrieve_options = {
         'format': 'bestaudio/best',
-        'audioformat': 'mp3',
+        'audioformat': 'opus',
         'nocheckcertificate': True,
         'ignoreerrors': False,
         'logtostderr': False,
