@@ -571,7 +571,7 @@ class Pretests:
             cursor = db.cursor()
 
             cursor.execute("""
-                SELECT post_reset_day FROM Updates;
+                SELECT update_day FROM Updates;
             """)
 
             update_day = cursor.fetchone()[0]
@@ -600,7 +600,7 @@ class Pretests:
 
             try:
                 cursor.execute(f"""
-                        UPDATE Updates SET post_reset_day = {update_day}
+                        UPDATE Updates SET update_day = {update_day}
                 """)
                 db.commit()
             except sqlite3.OperationalError as e:
