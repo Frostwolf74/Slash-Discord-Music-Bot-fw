@@ -566,14 +566,18 @@ class Pretests:
             pront("Attempted to update libraries, this option is only available for linux operating systems", lvl="WARNING")
             return False
 
-        db = sqlite3.connect('settings.db')
-        cursor = db.cursor()
+        try:
+            db = sqlite3.connect('settings.db')
+            cursor = db.cursor()
 
-        cursor.execute("""
-            SELECT post_reset_day FROM Updates;
-        """)
+            cursor.execute("""
+                SELECT post_reset_day FROM Updates;
+            """)
 
-        update_day = cursor.fetchone()[0]
+            update_day = cursor.fetchone()[0]
+        except Exception as e:
+            pront(e, lvl="ERROR")
+            return False
 
         ### explanation pseudocode
         # play triggered
