@@ -41,7 +41,7 @@ class DB:
 
             DB._cursor.execute(f"""
                     CREATE TABLE Updates ( 
-                        post_reset_day INT NOT NULL
+                        update_day INT NOT NULL
                     );
             """)
 
