@@ -586,6 +586,7 @@ class Pretests:
         d: datetime = datetime.now(pytz.timezone("America/New_York")) # set as EST
 
         if d.hour >= 0 and d.day != update_day:
+            pront("Update detected, installing")
             update_day = datetime.today().day
 
             # create a new subprocess that runs the update, starts a new session then kills the bot
@@ -608,6 +609,7 @@ class Pretests:
             sys.exit(0) # kill the bot and let the new session take over
         else:
             db.close()
+            pront("No updates detected, skipping")
             return False
 
 
