@@ -94,8 +94,8 @@ class Bot(commands.Bot):  # initiates the bots intents and on_ready event
             stringBuilder += str(i.name) + "\n"
         print(stringBuilder)
 
-        Utils.pront("Checking for updates")
-        await Utils.Pretests.update_libraries()
+        # Utils.pront("Checking for updates") # FIXME broken af
+        # await Utils.Pretests.update_libraries()
 
     async def on_resumed(self):
         Utils.pront("Updating bot status")
