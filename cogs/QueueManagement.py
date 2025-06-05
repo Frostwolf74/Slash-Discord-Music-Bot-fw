@@ -23,9 +23,6 @@ class QueueManagement(commands.Cog):
             await interaction.response.send_message(f"My install link was not set up correctly, i am missing: {perm_check}")
             return
 
-        # checks if libraries are up-to-date
-        await Utils.Pretests.update_libraries(interaction)
-
         # Check if author is in VC
         if interaction.user.voice is None:
             await interaction.response.send_message('You are not in a voice channel', ephemeral=True)
