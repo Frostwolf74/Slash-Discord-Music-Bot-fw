@@ -591,6 +591,7 @@ class Pretests:
 
         pront("current day: " + str(d.day) + "\nupdate day: " + str(update_day))
         if d.hour >= 0 and d.day != update_day:
+            pront("current day: " + str(d.day) + "\nupdate day: " + str(update_day))
             pront("Update detected, installing")
             update_day = datetime.today().day
 
