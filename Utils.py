@@ -82,7 +82,7 @@ def create_json_snapshot(player: Player):
         }
     }]
 
-    with open(f"snapshots/player_snapshot_{datetime.now().strftime("%Y-%m-%d %H%M%S")}.json", "w") as f:
+    with open(f"snapshots/player_snapshot_{datetime.now().strftime('%%Y-%%m-%%d %%H%%M%%S')}.json", "w") as f:
         json.dump(voice_data, f, indent=4)
 
 
