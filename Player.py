@@ -1,5 +1,7 @@
 from __future__ import annotations
 import asyncio
+from datetime import datetime
+
 import discord
 import math
 import random
@@ -268,6 +270,10 @@ class Player:
                 self.player_song_end.clear()
 
                 self.song.start()
+
+                # create json snapshot of the bot's current state (may delay song timer)
+                Utils.create_json_snapshot(self)
+                Utils.pront(f"[{datetime.now()}] playing {self.song.title} by {self.song.uploader} ({self.song.original_url})")
 
                 # Begin playing audio into Discord
                 self.vc.play(discord.FFmpegOpusAudio(

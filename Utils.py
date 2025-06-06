@@ -1,3 +1,6 @@
+import json
+
+import orjson
 import asyncio
 import os
 import sqlite3
@@ -57,6 +60,30 @@ def pront(content, lvl="DEBUG", end="\n") -> None:
     #    content = sep.join(content)
     print(colors[lvl] + "{" + datetime.now().strftime("%x %X") +
           "} " + lvl + ": " + str(content) + colors["NONE"], end=end)  # sep.join(list())
+
+
+def create_json_snapshot(player: Player):
+    # with open(rf"player_snapshot_{datetime.now().strftime("%Y-%m-%d_%H-%M-%S_%f")}.json", "wb") as f:
+    #     f.write(orjson.dumps(player, option=orjson.OPT_NAIVE_UTC | orjson.OPT_SERIALIZE_NUMPY))
+
+    # TODO see status of queue, see queue emptying and retrieve voice client information
+    # TODO list server's dictionary
+
+    voice_data = [{
+        "timestamp": {
+            "POSIX_timestamp": datetime.now().timestamp(),
+            "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        },
+        "player": {
+            "queue": player.queue.__str__(),
+            "song_title": player.song.title,
+            "song_elapsed_time": str(player.song.get_elapsed_time()),
+            "server_dictionary": Servers.__dict__.__str__()
+        }
+    }]
+
+    with open(f"snapshots/player_snapshot_{datetime.now().strftime("%Y-%m-%d %H%M%S")}.json", "w") as f:
+        json.dump(voice_data, f, indent=4)
 
 
 # makes a ascii song progress bar
