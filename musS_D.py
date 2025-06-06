@@ -135,19 +135,19 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
     if member.guild.voice_client is None:
         return
     
-    # If it's the bot
-    if member == bot.user:
-        # if we're disconnecting
-        if after.channel == None:
-        # If we've been forcibly removed from a VC
-        # (this leaves a hanging voice_client)
-            if member.guild.voice_client is not None:
-                Utils.pront("Bot was disconnected from VC")
-                player = Servers.get_player(member.guild.id)
-                # Clean up the player if it exists
-                if player is not None:
-                    await player.clean()          
-        return
+    # # If it's the bot
+    # if member == bot.user:
+    #     # if we're disconnecting
+    #     if after.channel == None:
+    #     # If we've been forcibly removed from a VC
+    #     # (this leaves a hanging voice_client)
+    #         if member.guild.voice_client is not None:
+    #             Utils.pront("Bot was disconnected from VC")
+    #             player = Servers.get_player(member.guild.id)
+    #             # Clean up the player if it exists
+    #             if player is not None:
+    #                 await player.clean()
+    #     return
 
     # # If the user was in the same VC as the bot and disconnected
     # if before.channel == member.guild.voice_client.channel and after.channel != before.channel:
