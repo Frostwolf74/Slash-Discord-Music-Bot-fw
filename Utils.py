@@ -572,7 +572,7 @@ class Pretests:
         missing = [perm for perm, value in required.items() if not value]
 
         if len(missing) > 0:
-            return str(", ".join(missing))
+            return ", ".join(missing)
         else:
             return None
 

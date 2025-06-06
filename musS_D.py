@@ -149,16 +149,16 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
                     await player.clean()          
         return
 
-    # If the user was in the same VC as the bot and disconnected
-    if before.channel == member.guild.voice_client.channel and after.channel != before.channel:
-        # If the bot is now alone
-        if len(before.channel.members) == 1:
-            player = Servers.get_player(member.guild.id)
-            if player is None:
-                await member.guild.voice_client.disconnect()
-            else:
-                await player.clean()
-        
+    # # If the user was in the same VC as the bot and disconnected
+    # if before.channel == member.guild.voice_client.channel and after.channel != before.channel:
+    #     # If the bot is now alone
+    #     if len(before.channel.members) == 1:
+    #         player = Servers.get_player(member.guild.id)
+    #         if player is None:
+    #             await member.guild.voice_client.disconnect()
+    #         else:
+    #             await player.clean()
+
         # If the bot should purge duplicate queued songs
         if DB.GuildSettings.get(member.guild.id, 'remove_orphaned_songs'):
             player = Servers.get_player(member.guild.id)
