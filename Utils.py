@@ -644,7 +644,7 @@ class Pretests:
             return False
 
 
-    # temporary solution to required yt-dlp updates
+    # temporary solution to required yt-dlp updates, unimplemented
     async def update_libraries_yt_dlp(self: discord.Interaction = None) -> int:
         """
                 Event-based updating utility for yt-dlp.
@@ -674,7 +674,7 @@ class Pretests:
             pront("Update detected, installing")
             update_day = datetime.today().day
 
-            p0 = await asyncio.create_subprocess_exec('python', '-m', 'pip', 'install', '--upgrade', 'pip', 'yt-dlp')
+            p0 = await asyncio.create_subprocess_exec('.venv/Scripts/python', '-m', 'pip', 'install', '--upgrade', 'pip', 'yt-dlp')
             await p0.wait()
 
             try:

@@ -32,15 +32,6 @@ class QueueManagement(commands.Cog):
     async def _play(self, interaction: discord.Interaction, link: str, top: bool = False) -> None:
         await interaction.response.defer(thinking=True)
 
-        result = await Utils.Pretests.update_libraries_yt_dlp()
-
-        if result == 1:
-            await interaction.followup.send(
-                embed=Utils.get_embed(interaction, title='Updated YT-DLP!', content=":white_check_mark:"))
-        elif result == 0:
-            await interaction.followup.send(
-                embed=Utils.get_embed(interaction, title='Failed to update YT-DLP!', content=":x:"))
-
         # checks if correct permissions are set
         perm_check = await Utils.Pretests.check_perms(interaction)
         if perm_check is not None:
