@@ -67,7 +67,7 @@ class QueueManagement(commands.Cog):
 
         # If not in a VC, join
         if interaction.guild.voice_client is None:
-            await interaction.user.voice.channel.connect(self_deaf=True, reconnect=False)
+            await interaction.user.voice.channel.connect(self_deaf=True, reconnect=True)
 
         # If player does not exist, create one.
         if Servers.get_player(interaction.guild_id) is None:
