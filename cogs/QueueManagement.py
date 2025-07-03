@@ -15,8 +15,32 @@ class QueueManagement(commands.Cog):
     def __init__(self, bot: discord.Client):
         self.bot = bot
 
+
+    @app_commands.command(name="update", description="Update YT-DLP internally")
+    async def _update(self, interaction: discord.Interaction) -> None:
+        await interaction.response.defer(thinking=True)
+
+        result = await Utils.Pretests.update_libraries_yt_dlp()
+
+        if result == 1:
+            await interaction.followup.send(embed=Utils.get_embed(interaction, title='Updated YT-DLP!', content=":white_check_mark:"))
+        elif result == 0:
+            await interaction.followup.send(embed=Utils.get_embed(interaction, title='Failed to update YT-DLP!', content=":x:"))
+
+
     @app_commands.command(name="play", description="Plays a song from youtube(or other sources somtimes) in the voice channel you are in")
     async def _play(self, interaction: discord.Interaction, link: str, top: bool = False) -> None:
+        await interaction.response.defer(thinking=True)
+
+        result = await Utils.Pretests.update_libraries_yt_dlp()
+
+        if result == 1:
+            await interaction.followup.send(
+                embed=Utils.get_embed(interaction, title='Updated YT-DLP!', content=":white_check_mark:"))
+        elif result == 0:
+            await interaction.followup.send(
+                embed=Utils.get_embed(interaction, title='Failed to update YT-DLP!', content=":x:"))
+
         # checks if correct permissions are set
         perm_check = await Utils.Pretests.check_perms(interaction)
         if perm_check is not None:
@@ -32,8 +56,6 @@ class QueueManagement(commands.Cog):
         if interaction.guild.voice_client is not None and interaction.user.voice.channel != interaction.guild.voice_client.channel:
             await interaction.response.send_message("You must be in the same voice channel in order to use MaBalls", ephemeral=True)
             return
-
-        await interaction.response.defer(thinking=True)
 
         # create song
         scrape = await YTDLInterface.scrape_link(link)
@@ -54,7 +76,7 @@ class QueueManagement(commands.Cog):
 
         # If not in a VC, join
         if interaction.guild.voice_client is None:
-            await interaction.user.voice.channel.connect(self_deaf=True)
+            await interaction.user.voice.channel.connect(self_deaf=True, reconnect=False)
 
         # If player does not exist, create one.
         if Servers.get_player(interaction.guild_id) is None:
