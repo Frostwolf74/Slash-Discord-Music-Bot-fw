@@ -1,4 +1,6 @@
+import importlib
 import json
+import yt_dlp
 
 import orjson
 import asyncio
@@ -687,6 +689,10 @@ class Pretests:
                 return 0
             finally:
                 db.close()
+
+            # im like 90% sure this doesnt work like i want it to -frosty
+            global yt_dlp
+            yt_dlp = importlib.reload(yt_dlp)
 
             pront("Update successful", lvl="OKBLUE")
             return 1 # success, notify
