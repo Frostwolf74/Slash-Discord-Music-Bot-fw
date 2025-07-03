@@ -668,9 +668,9 @@ class Pretests:
             pront(e, lvl="ERROR")
             return 0
 
-        d: datetime = datetime.now(pytz.timezone("America/New_York"))  # set as EST
+        d: datetime = datetime.now(pytz.timezone("America/Edmonton"))  # set as MST
 
-        if d.hour >= 0 and d.day != update_day:
+        if d.day != update_day:
             pront("Update detected, installing")
             update_day = datetime.today().day
 
