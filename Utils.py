@@ -727,7 +727,7 @@ async def launch_tmux_bot():
 
     # Kill the tmux session if it already exists
     await asyncio.create_subprocess_exec(
-        'tmux', 'detach', '&&', 'tmux', 'kill-session', '-t', session_name,
+        'tmux', 'detach', '-s', session_name, '&&', 'tmux', 'kill-session', '-t', session_name,
         stdout=asyncio.subprocess.DEVNULL,
         stderr=asyncio.subprocess.DEVNULL
     )
