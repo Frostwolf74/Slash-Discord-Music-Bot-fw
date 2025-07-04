@@ -736,7 +736,7 @@ async def launch_tmux_bot():
     # Create the new tmux session
     try:
         await asyncio.create_subprocess_exec(
-            'tmux', 'new-session', '-d', '-s', session_name, '&&', shell_command
+            'tmux', 'new-session', '-s', session_name, '&&', shell_command
         )
     except Exception as e:
         pront(e, lvl="ERROR")
