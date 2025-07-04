@@ -1,3 +1,5 @@
+import asyncio
+
 import discord
 import random
 from discord.ext import commands
@@ -28,6 +30,7 @@ class QueueManagement(commands.Cog):
         #     await interaction.followup.send(embed=Utils.get_embed(interaction, title='Failed to update YT-DLP!', content=":x:"))
 
         await interaction.followup.send(embed=Utils.get_embed(interaction, title='Updated libraries!', content=":white_check_mark:"))
+        await asyncio.sleep(1)
         result = await Utils.Pretests.update_libraries()
 
         if not result:
@@ -258,7 +261,7 @@ class QueueManagement(commands.Cog):
             return
         player = Servers.get_player(interaction.guild_id)
         if not Utils.Pretests.has_discretionary_authority(interaction):
-            await Utils.send(interaction, title='Insufficient permissions!', 
+            await Utils.send(interaction, title='Insufficient permissions!',
                         content="You don't have the correct permissions to use this command!  Please refer to /help for more information.")
             return
                 
