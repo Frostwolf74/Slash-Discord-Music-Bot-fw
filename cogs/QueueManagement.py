@@ -30,7 +30,7 @@ class QueueManagement(commands.Cog):
         #     await interaction.followup.send(embed=Utils.get_embed(interaction, title='Failed to update YT-DLP!', content=":x:"))
 
         await interaction.followup.send(embed=Utils.get_embed(interaction, title='Updated libraries!', content=":white_check_mark:"))
-        await asyncio.sleep(1)
+        await asyncio.sleep(1) # give it time to send before it kills itself
         result = await Utils.Pretests.update_libraries()
 
         if not result:
