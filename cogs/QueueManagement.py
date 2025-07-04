@@ -27,12 +27,11 @@ class QueueManagement(commands.Cog):
         # elif result == 0:
         #     await interaction.followup.send(embed=Utils.get_embed(interaction, title='Failed to update YT-DLP!', content=":x:"))
 
+        await interaction.followup.send(embed=Utils.get_embed(interaction, title='Updated libraries!', content=":white_check_mark:"))
         result = await Utils.Pretests.update_libraries()
 
-        if result:
-            await interaction.followup.send(embed=Utils.get_embed(interaction, title='Updated libraries!', content=":white_check_mark:"))
-        else:
-            await interaction.followup.send(embed=Utils.get_embed(interaction, title='Failed to update libraries!', content=":x:"))
+        if not result:
+            await interaction.channel.send(embed=Utils.get_embed(interaction, title='On second thought, that actually didnt work!', content=":x:"))
 
 
     @app_commands.command(name="play", description="Plays a song from youtube(or other sources somtimes) in the voice channel you are in")

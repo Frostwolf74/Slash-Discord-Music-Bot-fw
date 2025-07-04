@@ -578,7 +578,6 @@ class Pretests:
         else:
             return None
 
-    # FIXME unimplemented
     async def update_libraries(self: discord.Interaction = None) -> bool:
         """
         Event-based updating utility that requires linux to function, kills the bot and starts a new one in a new tmux session.
@@ -639,7 +638,7 @@ class Pretests:
                 db.close()
 
             pront("Update successful, this bot session will be terminated. \nA new tmux session has been created under the name of SlashDiscordMusicBot", lvl="OKBLUE")
-            sys.exit(0) # kill the bot and let the new session take over
+            sys.exit(0)  # kill the bot and let the new session take over
         else:
             db.close()
             pront("No updates detected, skipping")
