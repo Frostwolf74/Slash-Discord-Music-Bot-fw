@@ -16,16 +16,23 @@ class QueueManagement(commands.Cog):
         self.bot = bot
 
 
-    @app_commands.command(name="update", description="Update YT-DLP internally")
+    @app_commands.command(name="update", description="Update the bot")
     async def _update(self, interaction: discord.Interaction) -> None:
         await interaction.response.defer(thinking=True)
 
-        result = await Utils.Pretests.update_libraries_yt_dlp()
+        # result = await Utils.Pretests.update_libraries_yt_dlp()
+        #
+        # if result == 1:
+        #     await interaction.followup.send(embed=Utils.get_embed(interaction, title='Updated YT-DLP!', content=":white_check_mark:"))
+        # elif result == 0:
+        #     await interaction.followup.send(embed=Utils.get_embed(interaction, title='Failed to update YT-DLP!', content=":x:"))
 
-        if result == 1:
-            await interaction.followup.send(embed=Utils.get_embed(interaction, title='Updated YT-DLP!', content=":white_check_mark:"))
-        elif result == 0:
-            await interaction.followup.send(embed=Utils.get_embed(interaction, title='Failed to update YT-DLP!', content=":x:"))
+        result = await Utils.Pretests.update_libraries()
+
+        if result:
+            await interaction.followup.send(embed=Utils.get_embed(interaction, title='Updated libraries!', content=":white_check_mark:"))
+        else:
+            await interaction.followup.send(embed=Utils.get_embed(interaction, title='Failed to update libraries!', content=":x:"))
 
 
     @app_commands.command(name="play", description="Plays a song from youtube(or other sources somtimes) in the voice channel you are in")

@@ -643,20 +643,23 @@ class Pretests:
         else:
             db.close()
             pront("No updates detected, skipping")
-            return False
+            return True
 
 
-    # temporary solution to required yt-dlp updates, unimplemented
+    # temporary solution to required yt-dlp updates
     async def update_libraries_yt_dlp(self: discord.Interaction = None) -> int:
         """
                 Event-based updating utility for yt-dlp.
 
                 Returns
                 -------
-                successful : bool
-                    False if unsuccessful
+                successful : int
+                    1: successful, notify
+                    0: unsuccessful, notify
+                    -1: successful, ignore
         """
 
+        # call the db and get the last time yt-dlp was updated
         try:
             db = sqlite3.connect('settings.db')
             cursor = db.cursor()
@@ -670,7 +673,17 @@ class Pretests:
             pront(e, lvl="ERROR")
             return 0
 
-        d: datetime = datetime.now(pytz.timezone("America/Edmonton"))  # set as MST
+        # get our current time
+        d: datetime = datetime.now(pytz.timezone("America/Edmonton"))  # set as MT because thats where the server is
+
+        ### explanation pseudocode
+        # play triggered
+        # current day is not stored day? update is due, day is set
+        # play triggered again
+        # still same day? update is not due
+        # play triggered again
+        # next day? update is due, day is set
+        # restart proof when stored with a db/file
 
         if d.day != update_day:
             pront("Update detected, installing")
@@ -701,39 +714,16 @@ class Pretests:
             pront("No updates detected, skipping")
             return -1 # success, ignore
 
-        # d: datetime = datetime.now(pytz.timezone("America/New_York"))  # set as EST
-        #
-        # try:
-        #     db = sqlite3.connect('settings.db')
-        #     cursor = db.cursor()
-        #
-        #     cursor.execute("""
-        #         SELECT update_day FROM Updates;
-        #     """)
-        #
-        #     update_day = cursor.fetchone()[0]
-        # except Exception as e:
-        #     pront(e, lvl="ERROR")
-        #     return False
-        #
-        # if d.hour >= 0 and d.day != update_day:
-        #     p0 = await asyncio.create_subprocess_exec('python', '-m', 'pip', 'install', '--upgrade', 'yt-dlp')
-        #     await p0.wait()
-        #
-        #     if p0.returncode != 0:
-        #         pront("YT-DLP update error code " + str(p0.returncode), lvl="ERROR")
-        #         return False
-
 
 async def launch_tmux_bot():
     session_name = "SlashDiscordMusicBot"
     cwd = os.getcwd() # current working directory
     shell_command = (
         f'cd {cwd} && '
-        f'python3 -m venv venv && '
-        f'source venv/bin/activate && '
-        f'pip install --upgrade pip && '
-        f'python3 musS_D.py'
+        f'python -m venv auto_venv && '
+        f'source auto_venv/bin/activate && '
+        f'pip install --upgrade pip yt-dlp && '
+        f'python musS_D.py'
     )
 
     # Kill the tmux session if it already exists
@@ -743,9 +733,10 @@ async def launch_tmux_bot():
         stderr=asyncio.subprocess.DEVNULL
     )
 
+    # Create the new tmux session
     try:
         await asyncio.create_subprocess_exec(
-            'tmux', 'new-session', '-d', '-s', session_name, shell_command
+            'tmux', 'new-session', '-d', '-s', session_name, '&&', shell_command
         )
     except Exception as e:
         pront(e, lvl="ERROR")
