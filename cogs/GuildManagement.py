@@ -12,7 +12,7 @@ class GuildManagement(commands.Cog):
     def __init__(self, bot: discord.Client):
         self.bot = bot
 
-    @app_commands.command(name="join", description="Adds the MaBalls to the voice channel you are in")
+    @app_commands.command(name="fjoin", description="Adds the MaBalls to the voice channel you are in")
     async def _join(self, interaction: discord.Interaction) -> None:
         # checks if correct permissions are set
         perm_check = await Utils.Pretests.check_perms(interaction)
@@ -33,7 +33,7 @@ class GuildManagement(commands.Cog):
         await Utils.send(interaction, title='Joined!', content=':white_check_mark:', progress=False)
 
 
-    @app_commands.command(name="leave", description="Removes the MaBalls from the voice channel you are in")
+    @app_commands.command(name="fleave", description="Removes the MaBalls from the voice channel you are in")
     async def _leave(self, interaction: discord.Interaction) -> None:
         if not Utils.Pretests.has_discretionary_authority(interaction):
             await Utils.send(interaction, title='Insufficient permissions!', 
@@ -55,7 +55,7 @@ class GuildManagement(commands.Cog):
         await Utils.send(interaction, title='Left!', content=':white_check_mark:', progress=False)
 
 
-    @app_commands.command(name="settings", description="Get or set the bot's settings for your server")
+    @app_commands.command(name="fsettings", description="Get or set the bot's settings for your server")
     async def _settings(self, interaction: discord.Interaction) -> None:
         for role in interaction.user.roles:
             if role.permissions.manage_channels or role.permissions.administrator: 

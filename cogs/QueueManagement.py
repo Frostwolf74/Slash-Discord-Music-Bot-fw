@@ -37,7 +37,7 @@ class QueueManagement(commands.Cog):
             await interaction.channel.send(embed=Utils.get_embed(interaction, title='On second thought, that actually didnt work!', content=":x:"))
 
 
-    @app_commands.command(name="play", description="Plays a song from youtube(or other sources somtimes) in the voice channel you are in")
+    @app_commands.command(name="fplay", description="Plays a song from youtube(or other sources somtimes) in the voice channel you are in")
     async def _play(self, interaction: discord.Interaction, link: str, top: bool = False) -> None:
         await interaction.response.defer(thinking=True)
 
@@ -108,7 +108,7 @@ class QueueManagement(commands.Cog):
         embed.set_thumbnail(url=song.thumbnail)
         await interaction.followup.send(embed=embed)
 
-    @app_commands.command(name="playlist", description="Adds a playlist to the queue")
+    @app_commands.command(name="fplaylist", description="Adds a playlist to the queue")
     async def _playlist(self, interaction: discord.Interaction, link: str, shuffle: bool = False) -> None:
         match DB.GuildSettings.get(interaction.guild_id, 'allow_playlist'):
             # False
@@ -204,7 +204,7 @@ class QueueManagement(commands.Cog):
         # Once all is said and done, start the populator thread
         Utils.populate_song_list(songs, interaction.guild_id)
 
-    @app_commands.command(name="search", description="Searches YouTube for a given query")
+    @app_commands.command(name="fsearch", description="Searches YouTube for a given query")
     async def _search(self, interaction: discord.Interaction, query: str) -> None:
         # Check if author is in VC
         if interaction.user.voice is None:
@@ -240,7 +240,7 @@ class QueueManagement(commands.Cog):
 
         await interaction.followup.send(embeds=embeds, view=Buttons.SearchSelection(query_result))
 
-    @app_commands.command(name="queue", description="Shows the current queue")
+    @app_commands.command(name="fqueue", description="Shows the current queue")
     async def _queue(self, interaction: discord.Interaction, page: int = 1) -> None:
         if not await Utils.Pretests.player_exists(interaction):
             return
@@ -255,7 +255,7 @@ class QueueManagement(commands.Cog):
 
         await interaction.response.send_message(embed=qb.get_queue_embed(interaction), view=qb)
 
-    @app_commands.command(name="shuffle", description="Shuffles the queue")
+    @app_commands.command(name="fshuffle", description="Shuffles the queue")
     async def shuffle(self, interaction: discord.Interaction) -> None:
         if not await Utils.Pretests.player_exists(interaction):
             return
@@ -270,7 +270,7 @@ class QueueManagement(commands.Cog):
 
     remove = app_commands.Group(name='remove', description='Commands that relate to removing songs from the queue')
 
-    @remove.command(name="index", description="Removes a song from the queue")
+    @remove.command(name="findex", description="Removes a song from the queue")
     async def _remove(self, interaction: discord.Interaction, number_in_queue: int) -> None:
         if not await Utils.Pretests.player_exists(interaction):
             return
@@ -308,7 +308,7 @@ class QueueManagement(commands.Cog):
                         icon_url=removed_song.requester.display_avatar.url)
         await interaction.response.send_message(embed=embed)
 
-    @remove.command(name="user", description="Removes all of the songs added by a specific user")
+    @remove.command(name="fuser", description="Removes all of the songs added by a specific user")
     async def _remove_user(self, interaction: discord.Interaction, member: discord.Member):
         if not await Utils.Pretests.player_exists(interaction):
             return
@@ -334,7 +334,7 @@ class QueueManagement(commands.Cog):
             embed.add_field(name=removed[index].uploader, value=removed[index].title, inline=False)
         await interaction.response.send_message(embed=embed)
 
-    @remove.command(name="duplicates", description="Removes duplicate songs from the queue")
+    @remove.command(name="fduplicates", description="Removes duplicate songs from the queue")
     async def _remove_dupes(self, interaction: discord.Interaction):
         if not await Utils.Pretests.player_exists(interaction):
             return
@@ -377,7 +377,7 @@ class QueueManagement(commands.Cog):
         Servers.get_player(interaction.guild_id).queue.clear()
         await interaction.response.send_message('💥 Queue cleared')
 
-    @app_commands.command(name="inspect", description="Inspects a song by number in queue")
+    @app_commands.command(name="finspect", description="Inspects a song by number in queue")
     async def _inspect(self, interaction: discord.Interaction, number_in_queue: int):
         if not await Utils.Pretests.player_exists(interaction):
             return
@@ -405,7 +405,7 @@ class QueueManagement(commands.Cog):
                         icon_url=song.requester.display_avatar.url)
         await interaction.response.send_message(embed=embed)
     
-    @app_commands.command(name="move", description="Moves a song in the queue to a different position. run queue command before using this command.")
+    @app_commands.command(name="fmove", description="Moves a song in the queue to a different position. run queue command before using this command.")
     async def _move(self, interaction: discord.Interaction, song_number: int, new_position: int) -> None:
         # Convert to non-human-readable
         song_number -= 1
