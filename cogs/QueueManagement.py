@@ -441,6 +441,8 @@ class QueueManagement(commands.Cog):
     async def _ambient(self, interaction: discord.Interaction) -> None:
         # maybe optimize to use _play -frost
 
+        interaction.response.send_message("Started")
+
         link = "https://www.youtube.com/watch?v=NGiTTTimQ_8"
 
         while random.randint(0,3) < 3: # 33% of playing every 2 hours
@@ -490,8 +492,6 @@ class QueueManagement(commands.Cog):
         embed.add_field(name='Requested by:', value=song.requester.mention)
         embed.add_field(name='Duration:', value=Song.parse_duration(song.duration))
         embed.set_thumbnail(url=song.thumbnail)
-
-        interaction.response.send_message("Started")
 
 
 async def setup(bot):
