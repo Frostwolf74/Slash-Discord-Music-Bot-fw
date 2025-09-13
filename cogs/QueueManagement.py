@@ -446,7 +446,7 @@ class QueueManagement(commands.Cog):
         link = "https://www.youtube.com/watch?v=NGiTTTimQ_8"
         while True:
             while random.randint(0,2) < 3: # 33% of playing every 2 hours
-                await asyncio.sleep(7200)
+                await asyncio.sleep(3600)
 
             # checks if correct permissions are set
             perm_check = await Utils.Pretests.check_perms(interaction)
