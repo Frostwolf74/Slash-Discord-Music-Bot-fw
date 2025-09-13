@@ -441,7 +441,7 @@ class QueueManagement(commands.Cog):
     async def _ambient(self, interaction: discord.Interaction) -> None:
         # maybe optimize to use _play -frost
 
-        interaction.response.send_message("Started")
+        await interaction.response.send_message("Started")
 
         link = "https://www.youtube.com/watch?v=NGiTTTimQ_8"
 
