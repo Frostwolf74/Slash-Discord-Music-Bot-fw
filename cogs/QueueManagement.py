@@ -473,8 +473,7 @@ class QueueManagement(commands.Cog):
 
         # If player does not exist, create one.
         if Servers.get_player(interaction.guild_id) is None:
-            Servers.add(interaction.guild_id, Player(
-                interaction.guild.voice_client, song))
+            Servers.add(interaction.guild_id, Player(interaction.guild.voice_client, song))
             position = 0
 
         # If it does, add the song to queue
@@ -491,6 +490,8 @@ class QueueManagement(commands.Cog):
         embed.add_field(name='Requested by:', value=song.requester.mention)
         embed.add_field(name='Duration:', value=Song.parse_duration(song.duration))
         embed.set_thumbnail(url=song.thumbnail)
+
+        interaction.response.send_message("Started")
 
 
 async def setup(bot):
