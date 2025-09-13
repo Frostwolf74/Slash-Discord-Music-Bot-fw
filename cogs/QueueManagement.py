@@ -491,7 +491,6 @@ class QueueManagement(commands.Cog):
         embed.add_field(name='Requested by:', value=song.requester.mention)
         embed.add_field(name='Duration:', value=Song.parse_duration(song.duration))
         embed.set_thumbnail(url=song.thumbnail)
-        await interaction.followup.send(embed=embed)
 
 
 async def setup(bot):
