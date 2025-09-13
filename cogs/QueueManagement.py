@@ -1,5 +1,4 @@
 import asyncio
-
 import discord
 import random
 from discord.ext import commands
@@ -437,6 +436,64 @@ class QueueManagement(commands.Cog):
         
         await Utils.send(interaction, title=f'Moved song {song_number + 1} to position {new_position + 1}')
 
+
+    @app_commands.command(name="ambient", description="start play Aphex Twin Ambient Music randomly")
+    async def _ambient(self, interaction: discord.Interaction) -> None:
+        # maybe optimize to use _play -frost
+
+        link = "https://www.youtube.com/watch?v=NGiTTTimQ_8"
+
+
+
+        while random.randint(0,3) < 3: # 33% of playing every 2 hours
+            await asyncio.sleep(1)
+
+        # checks if correct permissions are set
+        perm_check = await Utils.Pretests.check_perms(interaction)
+        if perm_check is not None:
+            await interaction.response.send_message(f"My install link was not set up correctly, i am missing: {perm_check}")
+            return
+
+        # Check if author is in VC
+        if interaction.user.voice is None:
+            await interaction.response.send_message('You are not in a voice channel', ephemeral=True)
+            return
+
+        # create song
+        scrape = await YTDLInterface.scrape_link(link)
+        song = Song(interaction, link, scrape)
+
+        # Check if song didn't initialize properly via scrape
+        if song.uploader is None:
+            # If it didn't, query the link instead (resolves searches in the link field)
+            query = await YTDLInterface.query_link(link)
+            song = Song(interaction, query.get('original_url'), query)
+
+        # If not in a VC, join
+        if interaction.guild.voice_client is None:
+            await interaction.user.voice.channel.connect(self_deaf=True, reconnect=True)
+
+        # If player does not exist, create one.
+        if Servers.get_player(interaction.guild_id) is None:
+            Servers.add(interaction.guild_id, Player(
+                interaction.guild.voice_client, song))
+            position = 0
+
+        # If it does, add the song to queue
+        Servers.get_player(interaction.guild_id).queue.add(song)
+        position = len(Servers.get_player(interaction.guild_id).queue.get())
+
+        embed = Utils.get_embed(
+            interaction,
+            title=f'[{position}] Added to Queue:',
+            url=song.original_url,
+            color=Utils.get_random_hex(song.id)
+        )
+        embed.add_field(name=song.uploader, value=song.title, inline=False)
+        embed.add_field(name='Requested by:', value=song.requester.mention)
+        embed.add_field(name='Duration:', value=Song.parse_duration(song.duration))
+        embed.set_thumbnail(url=song.thumbnail)
+        await interaction.followup.send(embed=embed)
 
 
 async def setup(bot):
