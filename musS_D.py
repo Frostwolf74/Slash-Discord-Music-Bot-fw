@@ -75,8 +75,7 @@ class Bot(commands.Bot):  # initiates the bots intents and on_ready event
 
         # Command syncing
         Utils.pront("Syncing tree")
-        # await self.tree.sync()
-        await bot.tree.sync(guild=discord.Object(id=1344070572107108403))
+        await self.tree.sync()
         Utils.pront("Tree synced!")
 
         # Fixing column values
