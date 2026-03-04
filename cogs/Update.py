@@ -26,9 +26,9 @@ class Update(commands.Cog):
             This also REQUIRES linux to run properly.
         """
 
-        if not await Utils.Pretests.update_check():
-            await interaction.response.send_message("YT-DLP is already on the latest version")
-            return
+       # if not await Utils.Pretests.update_check():
+            # await interaction.response.send_message("YT-DLP is already on the latest version")
+           # return
 
         # Paths and names
         TMUX_SESSION_NAME = os.environ.get('tmux_session_name')
