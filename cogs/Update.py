@@ -47,12 +47,15 @@ class Update(commands.Cog):
 
         try:
             # Get current tmux session name for deletion later
-            TMUX_OLD = subprocess.run(
-                ["tmux", "display-message", "-p", "#S"],
-                capture_output=True,
-                text=True,
-                check=True
-            ).stdout.strip()
+            try:
+                TMUX_OLD = subprocess.run(
+                    ["tmux", "display-message", "-p", "#S"],
+                    capture_output=True,
+                    text=True,
+                    check=True
+                ).stdout.strip()
+            except Exception as e:
+                print(e)
 
             # Run pip upgrade inside venv for all venv packages and update yt-dlp to nightly
             p1 = subprocess.run([
@@ -125,6 +128,8 @@ class Update(commands.Cog):
 
             if TMUX_OLD:
                 subprocess.run(["tmux", "kill-session", "-t", TMUX_OLD], check=False)
+
+            exit()
 
         except subprocess.CalledProcessError as e:
             print(e.stderr)
