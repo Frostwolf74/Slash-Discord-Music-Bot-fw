@@ -47,6 +47,7 @@ class Update(commands.Cog):
 
         try:
             # Get current tmux session name for deletion later
+            TMUX_OLD = ""
             try:
                 TMUX_OLD = subprocess.run(
                     ["tmux", "display-message", "-p", "#S"],
@@ -56,6 +57,9 @@ class Update(commands.Cog):
                 ).stdout.strip()
             except Exception as e:
                 print(e)
+
+            if TMUX_OLD == FileNotFoundError:
+                Utils.pront("Couldnt find the tmux session name (is this running outside of a tmux session?)", lvl="ERROR")
 
             # Run pip upgrade inside venv for all venv packages and update yt-dlp to nightly
             p1 = subprocess.run([
@@ -126,7 +130,7 @@ class Update(commands.Cog):
 
             await interaction.channel.send("Finished installing all packages.\nTerminating old process.")
 
-            if TMUX_OLD:
+            if TMUX_OLD and TMUX_OLD != FileNotFoundError:
                 subprocess.run(["tmux", "kill-session", "-t", TMUX_OLD], check=False)
 
             exit()
